@@ -4,7 +4,7 @@ An android app that checkes the balance of different ic cards
 # Octopus cards
 If you want the raw data collected from some Octopus cards, please read the files in the "Octopus Data" folder.
 
-How to read raw value of service 0x0117 (16 bytes):
+How to convert the raw value of service 0x0117 into readable card balance (16 bytes):
 1. Take byte 2 and byte 3.
 2. Join them into one number.
 3. Subtract 350 from that number.
