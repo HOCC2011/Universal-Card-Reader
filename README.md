@@ -1,5 +1,5 @@
 # Universal-Card-Reader
-An android app to check balances of different ic cards
+An android app that checkes the balance of different ic cards
 
 # Octopus cards
 If you want the raw data collected from some Octopus cards, please read the files in the "Octopus Data" folder.
