@@ -72,7 +72,6 @@ public class TunionRead extends AppCompatActivity {
             detailed_info_string.append("PPSE Raw Data:\n").append(ppseRawData);
 
             if (ppseString.contains("MOT_T_EP")) {
-                Toast.makeText(this, "This is a T-Union card.", Toast.LENGTH_LONG).show();
                 detailed_info_string.append("\n\nThis is a T-Union card.");
 
                 // Select MOT_T_EP AID
