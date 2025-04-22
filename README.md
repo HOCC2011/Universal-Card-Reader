@@ -1,7 +1,7 @@
 # Universal-Card-Reader
 An android app that checkes the balance of different ic cards
 
-# Octopus cards
+# Octopus Cards
 If you want the raw data collected from some Octopus cards, please read the files in the "Octopus Data" folder.
 
 How to convert the raw value of service 0x0117 into readable card balance (16 bytes):
@@ -19,6 +19,7 @@ Difference between cards distributed before / after 1/10/2017:
 Before: The balance is exactly same with the raw value
 After: The balance is $15.0 less than the raw value
 
-How to calculate T-union exchange rate:
-Rate ≥ by 0.001 = T-union balance / Octopus balance (truncate to 3 decimal places)
+**How to calculate Octopus - China T-union card exchange rate:**
+Exchange rate ≥ by 0.001 = T-union balance / Octopus balance (truncate to 3 decimal places)
 
+# China T-Union Cards
