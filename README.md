@@ -23,3 +23,9 @@ After: The balance is $15.0 less than the raw value
 Exchange rate ≥ by 0.001 = T-union balance / Octopus balance (truncate to 3 decimal places)
 
 # China T-Union Cards
+Read the PPSE (Proximity Payment System Environment) of the card
+All T-Union cards should contain an application called MOT_T_EP with the AID A000000632010105
+The card number should be found in the response of selecting the application in the form of 03 10 4X XX XX XX XX XX XX XX
+The balance can be read using the APDU command 80 5C 00 02 04  
+It should reply 4 bytes of data in hexadecimal
+The actual value needs to be divided by 100 because the returned value is in cents
