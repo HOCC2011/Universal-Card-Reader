@@ -35,6 +35,7 @@ public class OctopusRead extends AppCompatActivity {
     ImageView back;
     double card_balance_ori = 0;
     double card_balance = 0;
+    String balance_string;
 
     @SuppressLint({"MissingInflatedId"})
     @Override
@@ -63,7 +64,8 @@ public class OctopusRead extends AppCompatActivity {
             conven35.setBackground(getResources().getDrawable(R.drawable.background));
             conven50.setTextColor(getColor(R.color.fg_color));
             conven50.setBackground(getResources().getDrawable(R.drawable.background_unselected));
-            balance_text.setText("$" + card_balance_ori);
+            balance_string = String.format("%.1f", card_balance_ori);
+            balance_text.setText("$" + balance_string);
         });
         conven50 = findViewById(R.id.conven50);
         conven50.setOnClickListener(View -> {
@@ -72,7 +74,8 @@ public class OctopusRead extends AppCompatActivity {
             conven35.setTextColor(getColor(R.color.fg_color));
             conven35.setBackground(getResources().getDrawable(R.drawable.background_unselected));
             card_balance = card_balance_ori - 15;
-            balance_text.setText("$" + card_balance);
+            balance_string = String.format("%.1f", card_balance);
+            balance_text.setText("$" + balance_string);
         });
     }
 
@@ -206,7 +209,8 @@ public class OctopusRead extends AppCompatActivity {
                     link.setVisibility(View.GONE);
                     conven35.setVisibility(View.GONE);
                     conven50.setVisibility(View.GONE);
-                    balance_text.setText("$" + card_balance_ori);
+                    balance_string = String.format("%.1f", card_balance_ori);
+                    balance_text.setText("$" + balance_string);
                 } else if ("043B".equals(icCode) && card_balance_ori > 0) { //T-Union Card with enough balance
                     info.setText("This is a T-union Octopus card.");
                     link.setText("Click here to check the exchange rate.");
@@ -220,13 +224,15 @@ public class OctopusRead extends AppCompatActivity {
                     });
                     conven35.setVisibility(View.GONE);
                     conven50.setVisibility(View.GONE);
-                    balance_text.setText("$" + card_balance_ori);
+                    balance_string = String.format("%.1f", card_balance_ori);
+                    balance_text.setText("$" + balance_string);
                 } else if ("043B".equals(icCode)) { //T-Union Card with not enough balance
                     info.setText("This is a T-union Octopus card.\nUnable to check the exchange rate because the balance equals or lower than 0.");
                     link.setVisibility(View.GONE);
                     conven35.setVisibility(View.GONE);
                     conven50.setVisibility(View.GONE);
-                    balance_text.setText("$" + card_balance_ori);
+                    balance_string = String.format("%.1f", card_balance_ori);
+                    balance_text.setText("$" + balance_string);
                 } else { // Normal cards
                     info.setText("This card may have a $35/50 convenience limit. Please select your card's convenience limit above.");
                     link.setText(Html.fromHtml("<a href='https://www.google.com'>Click here to know more.</a>"));
@@ -236,7 +242,8 @@ public class OctopusRead extends AppCompatActivity {
                     conven35.setVisibility(View.VISIBLE);
                     conven50.setVisibility(View.VISIBLE);
                     card_balance = card_balance_ori - 15;
-                    balance_text.setText("$" + card_balance);
+                    balance_string = String.format("%.1f", card_balance);
+                    balance_text.setText("$" + balance_string);
                 }
 
                 FelicaDetailedInfo.setText("Detailed info:\n" + result.toString());
