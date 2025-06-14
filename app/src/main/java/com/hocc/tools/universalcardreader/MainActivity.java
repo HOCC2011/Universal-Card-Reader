@@ -2,11 +2,13 @@ package com.hocc.tools.universalcardreader;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.NfcF;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     LinearLayout Octopus;
     LinearLayout Tunion;
+    LinearLayout Tango;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -38,5 +41,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, TunionRead.class);
             startActivity(intent);
         });
+        Tango = findViewById(R.id.Tango);
+        Tango.setOnClickListener(View -> {
+            Intent intent = new Intent(MainActivity.this, TangoRead.class);
+            startActivity(intent);
+        });
+        SharedPreferences prefs = getSharedPreferences("Features", MODE_PRIVATE);
+        if (prefs.getBoolean("Tango", false) == true) {
+            Tango.setVisibility(View.VISIBLE);
+        } else {
+            Tango.setVisibility(View.GONE);
+        }
     }
 }
