@@ -94,6 +94,25 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/MPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:background="@drawable/background">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Read Macau Pass cards"
+                    android:textColor="@color/bg_color"
+                    android:fontFamily="@font/font"
+                    android:textSize="20dp"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/Tango"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,7 +120,6 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="16dp"
-                android:visibility="gone"
                 android:background="@drawable/background">
 
                 <TextView

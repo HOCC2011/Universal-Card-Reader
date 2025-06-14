@@ -23,6 +23,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     LinearLayout Octopus;
     LinearLayout Tunion;
+    LinearLayout MPass;
     LinearLayout Tango;
 
     @SuppressLint("MissingInflatedId")
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        SharedPreferences prefs = getSharedPreferences("Features", MODE_PRIVATE);
         Octopus = findViewById(R.id.Octopus);
         Octopus.setOnClickListener(View -> {
             Intent intent = new Intent(MainActivity.this, OctopusRead.class);
@@ -41,12 +43,21 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, TunionRead.class);
             startActivity(intent);
         });
+        MPass = findViewById(R.id.MPass);
+        MPass.setOnClickListener(View -> {
+            Intent intent = new Intent(MainActivity.this, MPassRead.class);
+            startActivity(intent);
+        });
+        if (prefs.getBoolean("MPass", false) == true) {
+            MPass.setVisibility(View.VISIBLE);
+        } else {
+            MPass.setVisibility(View.GONE);
+        }
         Tango = findViewById(R.id.Tango);
         Tango.setOnClickListener(View -> {
             Intent intent = new Intent(MainActivity.this, TangoRead.class);
             startActivity(intent);
         });
-        SharedPreferences prefs = getSharedPreferences("Features", MODE_PRIVATE);
         if (prefs.getBoolean("Tango", false) == true) {
             Tango.setVisibility(View.VISIBLE);
         } else {

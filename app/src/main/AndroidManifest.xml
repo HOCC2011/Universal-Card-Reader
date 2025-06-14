@@ -19,6 +19,9 @@
         android:theme="@style/Theme.CardReader"
         tools:targetApi="31">
         <activity
+            android:name=".MPassRead"
+            android:exported="false" />
+        <activity
             android:name=".FlagSettings"
             android:exported="true" />
         <activity

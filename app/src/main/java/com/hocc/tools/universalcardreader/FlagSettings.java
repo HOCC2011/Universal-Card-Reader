@@ -1,5 +1,6 @@
 package com.hocc.tools.universalcardreader;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Switch;
@@ -14,6 +15,7 @@ public class FlagSettings extends AppCompatActivity {
 
     private static final boolean ReadTango = false;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,15 +27,24 @@ public class FlagSettings extends AppCompatActivity {
             return insets;
         });
         Switch TangoSwitch = findViewById(R.id.TangoSwitchView);
+        Switch MPassSwitch = findViewById(R.id.MPassSwitchView);
         // Load saved state
         SharedPreferences prefs = getSharedPreferences("Features", MODE_PRIVATE);
         boolean switchState = prefs.getBoolean("Tango", false); // default is off
         TangoSwitch.setChecked(switchState);
+        boolean switchStateMPass = prefs.getBoolean("MPass", false); // default is off
+        MPassSwitch.setChecked(switchStateMPass);
 
         // Save new state when switch is toggled
         TangoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("Tango", isChecked);
+            editor.apply();
+        });
+        // Save new state when switch is toggled
+        MPassSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("MPass", isChecked);
             editor.apply();
         });
     }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
-    tools:context=".OctopusReadTunion">
+    tools:context=".TunionRead">
 
     <ImageView
         android:id="@+id/back"
