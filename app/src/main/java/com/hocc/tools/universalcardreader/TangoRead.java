@@ -53,6 +53,7 @@ public class TangoRead extends AppCompatActivity {
     }
     private void onCardTap(Tag tag) {
         Log.d("Debug", "Card Tapped!");
+        balance_text.setText("-");
         Toast.makeText(this, "Reading Card...", Toast.LENGTH_LONG).show();
         DetailedInfoString = new StringBuilder("");
         IsoDep isoDep = IsoDep.get(tag);
