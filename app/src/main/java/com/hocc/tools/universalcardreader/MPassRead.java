@@ -98,7 +98,7 @@ public class MPassRead extends AppCompatActivity {
                             (balanceResponse[3] & 0xFF);
 
                     balance_string.append(value / 10.0 - 10.0);
-                    detailed_info_string.append("\n\nBalance: $").append(value / 10.0 - 10.0).append(" (Interpreted == Original - 1)");
+                    detailed_info_string.append("\n\nBalance: $").append(value / 10.0 - 10.0).append(" (Interpreted == Original / 10 - 10)");
 
                     balance.setText("$" + balance_string);
                     detailed_info.setText(detailed_info_string);
