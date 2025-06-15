@@ -76,6 +76,12 @@ public class MPassRead extends AppCompatActivity {
                 String cardNumber = bytesToHex(MPassResponse).replace(" ", "").substring(116, bytesToHex(MPassResponse).replace(" ", "").length() - 14);
                 detailed_info_string.append("\n\nCard Number:\n").append(cardNumber);
 
+                byte[] MPassCommand1 = new byte[]{
+                        0x00, (byte) 0xB0, (byte) 0x95, 0x0C, 0x1C
+                };
+                byte[] MPassCommand1Response = isoDep.transceive(MPassCommand1);
+                detailed_info_string.append("\n\nMPass Command1 Raw Data:\n").append(bytesToHex(MPassCommand1Response));
+
                 byte[] getBalance = new byte[]{(byte) 0x80, (byte) 0x5C, 0x00, 0x02, 0x04};
                 byte[] balanceResponse = isoDep.transceive(getBalance);
                 detailed_info_string.append("\n\nBalance Raw Data:\n").append(bytesToHex(balanceResponse));
@@ -91,12 +97,50 @@ public class MPassRead extends AppCompatActivity {
                             ((balanceResponse[2] & 0xFF) << 8) |
                             (balanceResponse[3] & 0xFF);
 
-                    balance_string.append(value / 100.0 -1);
-                    detailed_info_string.append("\n\nBalance: $").append(value / 100.0 - 1).append(" (Interpreted == Original - 1)");
+                    balance_string.append(value / 10.0 - 10.0);
+                    detailed_info_string.append("\n\nBalance: $").append(value / 10.0 - 10.0).append(" (Interpreted == Original - 1)");
 
                     balance.setText("$" + balance_string);
                     detailed_info.setText(detailed_info_string);
                 }
+
+                byte[] MPassCommand2 = new byte[]{
+                        0x00, (byte) 0xB0, (byte) 0x95, 0x00, 0x00
+                };
+                byte[] MPassCommand2Response = isoDep.transceive(MPassCommand2);
+                detailed_info_string.append("\n\nMPass Command2 Raw Data:\n").append(bytesToHex(MPassCommand2Response));
+
+                byte[] MPassCommand3 = new byte[]{
+                        0x00, (byte) 0xB2, (byte) 0x04, (byte) 0xBC, 0x00
+                };
+                byte[] MPassCommand3Response = isoDep.transceive(MPassCommand3);
+                detailed_info_string.append("\n\nMPass Command3 Raw Data:\n").append(bytesToHex(MPassCommand3Response));
+
+                byte[] MPassCommand4 = new byte[]{
+                        0x00, (byte) 0xB2, (byte) 0x01, (byte) 0xC4, 0x00
+                };
+                byte[] MPassCommand4Response = isoDep.transceive(MPassCommand4);
+                detailed_info_string.append("\n\nMPass Command4 Raw Data:\n").append(bytesToHex(MPassCommand4Response));
+
+                byte[] MPassCommand5 = new byte[]{
+                        0x00, (byte) 0xB2, (byte) 0x01, (byte) 0xCC, 0x00
+                };
+                byte[] MPassCommand5Response = isoDep.transceive(MPassCommand5);
+                detailed_info_string.append("\n\nMPass Command5 Raw Data:\n").append(bytesToHex(MPassCommand5Response));
+
+                byte[] MPassCommand6 = new byte[]{
+                        0x00, (byte) 0xB2, (byte) 0x02, (byte) 0xCC, 0x00
+                };
+                byte[] MPassCommand6Response = isoDep.transceive(MPassCommand6);
+                detailed_info_string.append("\n\nMPass Command6 Raw Data:\n").append(bytesToHex(MPassCommand6Response));
+
+                byte[] MPassCommand7 = new byte[]{
+                        0x00, (byte) 0xB0, (byte) 0x9C, (byte) 0x00, 0x00
+                };
+                byte[] MPassCommand7Response = isoDep.transceive(MPassCommand7);
+                detailed_info_string.append("\n\nMPass Command7 Raw Data:\n").append(bytesToHex(MPassCommand7Response));
+
+                detailed_info.setText(detailed_info_string);
             } else {
                 detailed_info_string.append("\n\nThis is not a Macau Pass card.");
                 detailed_info.setText(detailed_info_string);
