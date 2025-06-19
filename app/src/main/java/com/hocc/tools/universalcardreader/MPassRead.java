@@ -55,11 +55,12 @@ public class MPassRead extends AppCompatActivity {
         try {
             isoDep.connect();
 
-            // Select MPass AID (Required for TU hybrid card)  41 4D 54 4A 41 56 41 43 41 52 44 11
+            // Select MPass AID (Required for TU hybrid card)  41 4D 54 4A 41 56 41 43 41 52 44
             byte[] selectAID = new byte[]{
-                    (byte) 0x00, (byte) 0xA4, 0x04, 0x00, 0x0B, 0x41, 0x4D, 0x54, 0x4A, 0x41, 0x56, 0x41, 0x43, 0x41, 0x52, 0x44, 0x11
+                    (byte) 0x00, (byte) 0xA4, 0x04, 0x00, 0x0B, 0x41, 0x4D, 0x54, 0x4A, 0x41, 0x56, 0x41, 0x43, 0x41, 0x52, 0x44
             };
-            isoDep.transceive(selectAID);
+            byte[] ResponseA = isoDep.transceive(selectAID);
+            Log.d("Debug", bytesToHex(ResponseA));
 
             // Select MPass AID (Actual App)  C4 C3 C5 CD A8 C7 AE B0 FC
             byte[] selectAID2 = new byte[]{
