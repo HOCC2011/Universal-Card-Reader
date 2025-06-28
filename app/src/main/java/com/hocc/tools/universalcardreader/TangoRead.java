@@ -77,6 +77,7 @@ public class TangoRead extends AppCompatActivity {
                 DetailedInfo.setText(DetailedInfoString.toString());
                 Log.d("NFC", "DESFire card detected!");
                 cardType = 0;
+                DESFireReadFile1(isoDep);
             } else { // Else check for HCE Card
                 byte[] responseApplication2 = isoDep.transceive(HCESelect);
                 String Application2RawData = bytesToHex(responseApplication2);
@@ -89,7 +90,7 @@ public class TangoRead extends AppCompatActivity {
                     DetailedInfo.setText(DetailedInfoString.toString());
                     CardNo = bytesToHex(Arrays.copyOfRange(responseApplication2, 0, responseApplication2.length -1)).replace(" ", "");
                     Log.d("CardNo", CardNo);
-                    HCECardReadApplication2(isoDep, responseApplication2);
+                    HCECardReadApplication2(responseApplication2);
                     HCECardReadFinish(isoDep);
                 } else { // Can't open applications in either way
                     DetailedInfoString.append("This is not a Tango card");
@@ -132,14 +133,17 @@ public class TangoRead extends AppCompatActivity {
     }
 
     /*------------Data Processing Methods------------ */
-
-    // HCE Data Processing Voids
-    private void HCECardReadApplication2 (IsoDep isoDep, byte[] responseApplication2) {
+    private void DESFireReadFile1 (IsoDep isoDep) {
         try {
-            byte[] Application2selectCommand = new byte[]{(byte) 0x00, (byte) 0xA4, 0x04, 0x00, (byte) 0x05, (byte) 0xF0, 0x00, (byte) 0x86, 0x42, 0x57};
-            isoDep.transceive(Application2selectCommand);
-            String Application2RawData = bytesToHex(responseApplication2);
-            balanceString = bytesToHex(Arrays.copyOfRange(responseApplication2, 0, 3)).replace(" ", "");
+            byte[] ReadFile1Command = new byte[] {
+                    (byte) 0xBD,
+                    (byte) 0x01,
+                    (byte) 0x00, (byte) 0x00, (byte) 0x00,
+                    (byte) 0x09, (byte) 0x00, (byte) 0x00
+            };
+            byte[] ReadFile1Response = isoDep.transceive(ReadFile1Command);
+            Log.d("ReadFile1Response", bytesToHex(ReadFile1Response));
+            balanceString = bytesToHex(Arrays.copyOfRange(ReadFile1Response, 1, 4)).replace(" ", "");
             float balanceFloat;
             if (balanceString.startsWith("F")) { // Negative balance
                 if (balanceString.length() < 3) {
@@ -159,13 +163,38 @@ public class TangoRead extends AppCompatActivity {
                 String cents = balanceString.substring(balanceString.length() - 2);
                 balanceFloat = Float.parseFloat(dollars + "." + cents);
             }
+            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(ReadFile1Response, 4, ReadFile1Response.length)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
             DetailedInfo.setText(DetailedInfoString.toString());
-            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(responseApplication2, 3, responseApplication2.length - 1)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
             balance_text.setText("$" + balanceFloat);
         } catch (IOException e) {
             Log.e("Error", "Error reading card", e);
             DetailedInfoString.append("\n\nError communicating with card: ").append(e.getMessage());
         }
+    }
+    private void HCECardReadApplication2 (byte[] responseApplication2) {
+        balanceString = bytesToHex(Arrays.copyOfRange(responseApplication2, 0, 3)).replace(" ", "");
+        float balanceFloat;
+        if (balanceString.startsWith("F")) { // Negative balance
+            if (balanceString.length() < 3) {
+                balanceString = String.format("%03d", Integer.parseInt(balanceString));
+            }
+            balanceString = balanceString.substring(2);
+            Log.d("TAG", balanceString);
+            String dollars = balanceString.substring(0, balanceString.length() - 2);
+            String cents = balanceString.substring(balanceString.length() - 2);
+            balanceFloat = Float.parseFloat("-" + dollars + "." + cents);
+        } else { // Normal
+            if (balanceString.length() < 3) {
+                balanceString = String.format("%03d", Integer.parseInt(balanceString));
+            }
+            Log.d("TAG", balanceString);
+            String dollars = balanceString.substring(0, balanceString.length() - 2);
+            String cents = balanceString.substring(balanceString.length() - 2);
+            balanceFloat = Float.parseFloat(dollars + "." + cents);
+        }
+        DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(responseApplication2, 3, responseApplication2.length - 1)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
+        DetailedInfo.setText(DetailedInfoString.toString());
+        balance_text.setText("$" + balanceFloat);
     }
     private  void HCECardReadFinish(IsoDep isoDep) {
         try {
