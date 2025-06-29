@@ -139,11 +139,11 @@ public class TangoRead extends AppCompatActivity {
                     (byte) 0xBD,
                     (byte) 0x01,
                     (byte) 0x00, (byte) 0x00, (byte) 0x00,
-                    (byte) 0x09, (byte) 0x00, (byte) 0x00
+                    (byte) 0x0A, (byte) 0x00, (byte) 0x00
             };
             byte[] ReadFile1Response = isoDep.transceive(ReadFile1Command);
             Log.d("ReadFile1Response", bytesToHex(ReadFile1Response));
-            balanceString = bytesToHex(Arrays.copyOfRange(ReadFile1Response, 1, 4)).replace(" ", "");
+            balanceString = bytesToHex(Arrays.copyOfRange(ReadFile1Response, 2, 5)).replace(" ", "");
             float balanceFloat;
             if (balanceString.startsWith("F")) { // Negative balance
                 if (balanceString.length() < 3) {
@@ -163,7 +163,7 @@ public class TangoRead extends AppCompatActivity {
                 String cents = balanceString.substring(balanceString.length() - 2);
                 balanceFloat = Float.parseFloat(dollars + "." + cents);
             }
-            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(ReadFile1Response, 4, ReadFile1Response.length)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
+            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(ReadFile1Response, 5, ReadFile1Response.length)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
             DetailedInfo.setText(DetailedInfoString.toString());
             balance_text.setText("$" + balanceFloat);
         } catch (IOException e) {
