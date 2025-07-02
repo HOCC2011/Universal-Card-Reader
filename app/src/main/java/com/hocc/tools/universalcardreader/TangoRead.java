@@ -143,6 +143,7 @@ public class TangoRead extends AppCompatActivity {
             };
             byte[] ReadFile1Response = isoDep.transceive(ReadFile1Command);
             Log.d("ReadFile1Response", bytesToHex(ReadFile1Response));
+            DetailedInfoString.append("\n\nRead File1 Response:\n").append(bytesToHex(ReadFile1Response));
             balanceString = bytesToHex(Arrays.copyOfRange(ReadFile1Response, 1, 4)).replace(" ", "");
             float balanceFloat;
             if (balanceString.startsWith("F")) { // Negative balance
