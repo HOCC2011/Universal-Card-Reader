@@ -146,6 +146,54 @@ public class TangoRead extends AppCompatActivity {
             DetailedInfoString.append("\n\nRead File1 Response:\n").append(bytesToHex(ReadFile1Response));
             balanceString = bytesToHex(Arrays.copyOfRange(ReadFile1Response, 1, 4)).replace(" ", "");
             float balanceFloat;
+            if (balanceString.equals("86A000")) {
+                Log.d("Account type: ", "Online (Tango Account)");
+                DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(ReadFile1Response, 4, ReadFile1Response.length)).replace(" ", "") + "\n\nAccount type: Online (Tango Account)");
+                DetailedInfo.setText(DetailedInfoString.toString());
+            } else if (balanceString.equals("86AB00")) {
+                Log.d("Account type: ", "Online (Other Payment Method)");
+                DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(ReadFile1Response, 4, ReadFile1Response.length)).replace(" ", "") + "\n\nAccount type: Online (Other Payment Method)");
+                DetailedInfo.setText(DetailedInfoString.toString());
+            } else {
+                if (balanceString.startsWith("F")) { // Negative balance
+                    if (balanceString.length() < 3) {
+                        balanceString = String.format("%03d", Integer.parseInt(balanceString));
+                    }
+                    balanceString = balanceString.substring(2);
+                    Log.d("TAG", balanceString);
+                    String dollars = balanceString.substring(0, balanceString.length() - 2);
+                    String cents = balanceString.substring(balanceString.length() - 2);
+                    balanceFloat = Float.parseFloat("-" + dollars + "." + cents);
+                } else { // Normal
+                    if (balanceString.length() < 3) {
+                        balanceString = String.format("%03d", Integer.parseInt(balanceString));
+                    }
+                    Log.d("TAG", balanceString);
+                    String dollars = balanceString.substring(0, balanceString.length() - 2);
+                    String cents = balanceString.substring(balanceString.length() - 2);
+                    balanceFloat = Float.parseFloat(dollars + "." + cents);
+                }
+                DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(ReadFile1Response, 4, ReadFile1Response.length)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
+                DetailedInfo.setText(DetailedInfoString.toString());
+                balance_text.setText("$" + balanceFloat);
+            }
+        } catch (IOException e) {
+            Log.e("Error", "Error reading card", e);
+            DetailedInfoString.append("\n\nError communicating with card: ").append(e.getMessage());
+        }
+    }
+    private void HCECardReadApplication2 (byte[] responseApplication2) {
+        balanceString = bytesToHex(Arrays.copyOfRange(responseApplication2, 0, 3)).replace(" ", "");
+        float balanceFloat;
+        if (balanceString.equals("86A000")) {
+            Log.d("Account type: ", "Online (Tango Account)");
+            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(responseApplication2, 3, responseApplication2.length - 1)).replace(" ", "") + "\n\nAccount type: Online (Tango Account)");
+            DetailedInfo.setText(DetailedInfoString.toString());
+        } else if (balanceString.equals("86AB00")) {
+            Log.d("Account type: ", "Online (Other Payment Method)");
+            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(responseApplication2, 3, responseApplication2.length - 1)).replace(" ", "") + "\n\nAccount type: Online (Other Payment Method)");
+            DetailedInfo.setText(DetailedInfoString.toString());
+        } else {
             if (balanceString.startsWith("F")) { // Negative balance
                 if (balanceString.length() < 3) {
                     balanceString = String.format("%03d", Integer.parseInt(balanceString));
@@ -164,38 +212,10 @@ public class TangoRead extends AppCompatActivity {
                 String cents = balanceString.substring(balanceString.length() - 2);
                 balanceFloat = Float.parseFloat(dollars + "." + cents);
             }
-            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(ReadFile1Response, 4, ReadFile1Response.length)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
+            DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(responseApplication2, 3, responseApplication2.length - 1)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
             DetailedInfo.setText(DetailedInfoString.toString());
             balance_text.setText("$" + balanceFloat);
-        } catch (IOException e) {
-            Log.e("Error", "Error reading card", e);
-            DetailedInfoString.append("\n\nError communicating with card: ").append(e.getMessage());
         }
-    }
-    private void HCECardReadApplication2 (byte[] responseApplication2) {
-        balanceString = bytesToHex(Arrays.copyOfRange(responseApplication2, 0, 3)).replace(" ", "");
-        float balanceFloat;
-        if (balanceString.startsWith("F")) { // Negative balance
-            if (balanceString.length() < 3) {
-                balanceString = String.format("%03d", Integer.parseInt(balanceString));
-            }
-            balanceString = balanceString.substring(2);
-            Log.d("TAG", balanceString);
-            String dollars = balanceString.substring(0, balanceString.length() - 2);
-            String cents = balanceString.substring(balanceString.length() - 2);
-            balanceFloat = Float.parseFloat("-" + dollars + "." + cents);
-        } else { // Normal
-            if (balanceString.length() < 3) {
-                balanceString = String.format("%03d", Integer.parseInt(balanceString));
-            }
-            Log.d("TAG", balanceString);
-            String dollars = balanceString.substring(0, balanceString.length() - 2);
-            String cents = balanceString.substring(balanceString.length() - 2);
-            balanceFloat = Float.parseFloat(dollars + "." + cents);
-        }
-        DetailedInfoString.append("\n\nCard No.:\n" + bytesToHex(Arrays.copyOfRange(responseApplication2, 3, responseApplication2.length - 1)).replace(" ", "") + "\n\nBalance: $" + balanceFloat);
-        DetailedInfo.setText(DetailedInfoString.toString());
-        balance_text.setText("$" + balanceFloat);
     }
     private  void HCECardReadFinish(IsoDep isoDep) {
         try {
