@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     android:fitsSystemWindows="true"
-    tools:context=".OctopusRead">
+    tools:context=".MainActivity">
 
     <View
         android:id="@+id/blank"
