@@ -19,7 +19,7 @@ public class MPassRead extends AppCompatActivity {
     private TextView balance;
     private ImageView back;
     StringBuilder detailed_info_string;
-    StringBuilder balance_string;
+    String balance_string;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,7 +43,6 @@ public class MPassRead extends AppCompatActivity {
         Log.d("Debug", "Card Tapped!");
         Toast.makeText(this, "Reading Card...", Toast.LENGTH_LONG).show();
         detailed_info_string = new StringBuilder("");
-        balance_string = new StringBuilder("");
         balance.setText("-");
         IsoDep isoDep = IsoDep.get(tag);
 
@@ -98,8 +97,8 @@ public class MPassRead extends AppCompatActivity {
                             ((balanceResponse[2] & 0xFF) << 8) |
                             (balanceResponse[3] & 0xFF);
 
-                    balance_string.append(value / 10.0 - 10.0);
-                    detailed_info_string.append("\n\nBalance: $").append(value / 10.0 - 10.0).append(" (Interpreted == Original / 10 - 10)");
+                    balance_string = String.valueOf(value / 10.0 - 10.0);
+                    detailed_info_string.append("\n\nBalance: $").append(balance_string).append(" (Interpreted == Original / 10 - 10)");
 
                     balance.setText("$" + balance_string);
                     detailed_info.setText(detailed_info_string);

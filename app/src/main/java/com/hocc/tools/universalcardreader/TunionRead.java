@@ -19,7 +19,7 @@ public class TunionRead extends AppCompatActivity {
     private TextView balance;
     private ImageView back;
     StringBuilder detailed_info_string;
-    StringBuilder balance_string;
+    String balance_string;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,7 +43,6 @@ public class TunionRead extends AppCompatActivity {
         Log.d("Debug", "Card Tapped!");
         Toast.makeText(this, "Reading Card...", Toast.LENGTH_LONG).show();
         detailed_info_string = new StringBuilder("");
-        balance_string = new StringBuilder("");
         balance.setText("-");
         IsoDep isoDep = IsoDep.get(tag);
 
@@ -112,12 +111,12 @@ public class TunionRead extends AppCompatActivity {
                             ((balanceResponse[1] & 0xFF) << 16) |
                             ((balanceResponse[2] & 0xFF) << 8) |
                             (balanceResponse[3] & 0xFF);
-                    if(cardNumber.contains("7700")) {
-                        balance_string.append(value / 100.0 - 8.0);
-                        detailed_info_string.append("\n\nBalance: ¥").append(value / 100.0 - 8.0).append("\n¥8.0 have already been deducted as it is the amount of convenience balance.");
+                    if(cardNumber.contains("7700")) { //SH TU card
+                        balance_string = String.valueOf(value / 100.0 - 8.0);
+                        detailed_info_string.append("\n\nBalance: ¥").append(balance_string).append("\n¥8.0 have already been deducted as it is the amount of convenience balance.");
                     } else {
-                        balance_string.append(value / 100.0);
-                        detailed_info_string.append("\n\nBalance: ¥").append(value / 100.0);
+                        balance_string = String.valueOf(value / 100.0);
+                        detailed_info_string.append("\n\nBalance: ¥").append(balance_string);
                     }
                     balance.setText("¥" + balance_string);
                 }

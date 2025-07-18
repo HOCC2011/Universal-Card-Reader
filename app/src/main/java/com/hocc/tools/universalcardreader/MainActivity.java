@@ -21,10 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    LinearLayout Octopus;
-    LinearLayout Tunion;
-    LinearLayout MPass;
-    LinearLayout Tango;
+    TextView Octopus;
+    TextView Tunion;
+    TextView MPass;
+    TextView EasyCard;
+    TextView Tango;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
             MPass.setVisibility(View.VISIBLE);
         } else {
             MPass.setVisibility(View.GONE);
+        }
+        EasyCard = findViewById(R.id.EasyCard);
+        EasyCard.setOnClickListener(View -> {
+            Intent intent = new Intent(MainActivity.this, EasyCardRead.class);
+            startActivity(intent);
+        });
+        if (prefs.getBoolean("EasyCard", false) == true) {
+            EasyCard.setVisibility(View.VISIBLE);
+        } else {
+            EasyCard.setVisibility(View.GONE);
         }
         Tango = findViewById(R.id.Tango);
         Tango.setOnClickListener(View -> {

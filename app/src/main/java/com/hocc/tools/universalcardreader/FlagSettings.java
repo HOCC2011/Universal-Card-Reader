@@ -13,8 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class FlagSettings extends AppCompatActivity {
 
-    private static final boolean ReadTango = false;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +26,15 @@ public class FlagSettings extends AppCompatActivity {
         });
         Switch TangoSwitch = findViewById(R.id.TangoSwitchView);
         Switch MPassSwitch = findViewById(R.id.MPassSwitchView);
+        Switch EasyCardSwitch = findViewById(R.id.EasyCardSwitchView);
         // Load saved state
         SharedPreferences prefs = getSharedPreferences("Features", MODE_PRIVATE);
         boolean switchState = prefs.getBoolean("Tango", false); // default is off
         TangoSwitch.setChecked(switchState);
         boolean switchStateMPass = prefs.getBoolean("MPass", false); // default is off
         MPassSwitch.setChecked(switchStateMPass);
+        boolean switchStateEasyCard = prefs.getBoolean("EasyCard", false); // default is off
+        EasyCardSwitch.setChecked(switchStateEasyCard);
 
         // Save new state when switch is toggled
         TangoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -45,6 +46,12 @@ public class FlagSettings extends AppCompatActivity {
         MPassSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("MPass", isChecked);
+            editor.apply();
+        });
+        // Save new state when switch is toggled
+        EasyCardSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("EasyCard", isChecked);
             editor.apply();
         });
     }

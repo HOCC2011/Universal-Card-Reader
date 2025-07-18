@@ -55,81 +55,65 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
                 android:id="@+id/Octopus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Read Octopus cards"
+                android:textColor="@color/bg_color"
+                android:fontFamily="@font/font"
+                android:textSize="20dp"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:background="@drawable/background">
+                android:background="@drawable/background"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Read Octopus cards"
-                    android:textColor="@color/bg_color"
-                    android:fontFamily="@font/font"
-                    android:textSize="20dp"/>
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:id="@+id/Tunion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Read China T-Union cards"
+                android:textColor="@color/bg_color"
+                android:fontFamily="@font/font"
+                android:textSize="20dp"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:background="@drawable/background">
+                android:background="@drawable/background"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Read China T-Union cards"
-                    android:textColor="@color/bg_color"
-                    android:fontFamily="@font/font"
-                    android:textSize="20dp"/>
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:id="@+id/MPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Read Macau Pass cards"
+                android:textColor="@color/bg_color"
+                android:fontFamily="@font/font"
+                android:textSize="20dp"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:background="@drawable/background">
+                android:background="@drawable/background"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Read Macau Pass cards"
-                    android:textColor="@color/bg_color"
-                    android:fontFamily="@font/font"
-                    android:textSize="20dp"/>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/EasyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Read EasyCard cards"
+                android:textColor="@color/bg_color"
+                android:fontFamily="@font/font"
+                android:textSize="20dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp"
+                android:background="@drawable/background"/>
 
-            <LinearLayout
+            <TextView
                 android:id="@+id/Tango"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Read Tango cards"
+                android:textColor="@color/bg_color"
+                android:fontFamily="@font/font"
+                android:textSize="20dp"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:padding="16dp"
-                android:background="@drawable/background">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Read Tango cards"
-                    android:textColor="@color/bg_color"
-                    android:fontFamily="@font/font"
-                    android:textSize="20dp"/>
-            </LinearLayout>
+                android:background="@drawable/background"/>
 
         </LinearLayout>
 
