@@ -19,6 +19,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back" />
 
+    <ImageView
+        android:id="@+id/keySettings"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/white_bar"
+        app:srcCompat="@drawable/key" />
+
     <View
         android:id="@+id/blank"
         android:layout_width="match_parent"

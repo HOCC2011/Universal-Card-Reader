@@ -2,9 +2,11 @@ package com.hocc.tools.universalcardreader;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
+import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ public class EasyCardRead extends AppCompatActivity {
     private TextView detailed_info;
     private TextView balance;
     private ImageView back;
+    private ImageView keySettings;
     StringBuilder detailed_info_string;
     String balance_string;
 
@@ -32,6 +35,11 @@ public class EasyCardRead extends AppCompatActivity {
         back = findViewById(R.id.back);
         back.setOnClickListener(View -> {
             Intent intent = new Intent(EasyCardRead.this, MainActivity.class);
+            startActivity(intent);
+        });
+        keySettings = findViewById(R.id.keySettings);
+        keySettings.setOnClickListener(View -> {
+            Intent intent = new Intent(EasyCardRead.this, EasyCardKeySettings.class);
             startActivity(intent);
         });
         balance = findViewById(R.id.balance);
@@ -48,7 +56,9 @@ public class EasyCardRead extends AppCompatActivity {
         IsoDep isoDep = IsoDep.get(tag);
 
         if (isoDep == null) {
-            detailed_info.setText("Card isn't new card with IsoDep.");
+            detailed_info_string.append("Card isn't new card with IsoDep.");
+            detailed_info.setText(detailed_info_string);
+            ReadClassicCard(tag);
         } else {
             ReadIsoDepCard(isoDep);
         }
@@ -83,7 +93,8 @@ public class EasyCardRead extends AppCompatActivity {
                 detailed_info_string.append("\n\nCard Number:\n").append(cardNumber);
                 detailed_info.setText(detailed_info_string);
 
-                byte[] balanceBytes = new byte[]{(byte) 0x8E, (byte) 0x01};  // 0x018E = 398
+                byte[] balanceBytes = Arrays.copyOfRange(ReadAllDataResponse, 39, 41);
+                Log.d("Balance Bytes", bytesToHex(balanceBytes));
                 if (balanceBytes == null || balanceBytes.length < 2) {
                     Log.d("Error", "Balance byte array must be at least 2 bytes");
                 }
@@ -96,7 +107,7 @@ public class EasyCardRead extends AppCompatActivity {
                 balance.setText("$" + balance_string);
                 detailed_info.setText(detailed_info_string);
             } else {
-                detailed_info_string.append("\n\nThis is not a EasyCard card.");
+                detailed_info_string.append("\n\nThis is not an EasyCard card.");
                 detailed_info.setText(detailed_info_string);
             }
 
@@ -107,7 +118,54 @@ public class EasyCardRead extends AppCompatActivity {
         }
     }
     public void ReadClassicCard (Tag tag){
+        MifareClassic mifareClassic = MifareClassic.get(tag);
+        if (mifareClassic == null) {
+            detailed_info_string.append("\n\nThis card is not an EasyCard");
+            detailed_info.setText(detailed_info_string);
+        }
 
+        try {
+            mifareClassic.connect();
+
+            Log.d("UID", bytesToHex(tag.getId()).replace(" ", ""));
+            SharedPreferences prefs = getSharedPreferences("Sector2Keys", MODE_PRIVATE);
+            byte[] Sector2Key = hexStringToByteArray(prefs.getString(bytesToHex(tag.getId()).replace(" ", ""), "FFFFFFFFFFFF"));
+            boolean auth = mifareClassic.authenticateSectorWithKeyA(2, Sector2Key);
+            if (bytesToHex(Sector2Key).replace(" ", "").equals("FFFFFFFFFFFF")){
+                detailed_info_string.append("\n\nKeyA of sector 2 for this card is default key, please change it by pressing the key icon on the top right corner.");
+                detailed_info.setText(detailed_info_string);
+            } else {
+                detailed_info_string.append("\n\nKeyA of sector 2: " + bytesToHex(Sector2Key));
+                detailed_info.setText(detailed_info_string);
+            }
+            if (!auth) {
+                detailed_info_string.append("\n\nAuthentication failed.");
+                detailed_info.setText(detailed_info_string);
+            } else {
+                byte[] Sector2Data = mifareClassic.readBlock(mifareClassic.sectorToBlock(2) + 1);
+                Log.d("Block data:", bytesToHex(Sector2Data));
+                detailed_info_string.append("\n\nSector 2 Block 1 Raw Data:\n").append(bytesToHex(Sector2Data));
+                detailed_info.setText(detailed_info_string);
+
+                byte[] balanceBytes = Arrays.copyOfRange(Sector2Data, 0, 2);
+                Log.d("Balance Bytes", bytesToHex(balanceBytes));
+                if (balanceBytes == null || balanceBytes.length < 2) {
+                    Log.d("Error", "Balance byte array must be at least 2 bytes");
+                }
+                // Little endian: low byte first
+                balance_string = String.valueOf((balanceBytes[1] & 0xFF) << 8 | (balanceBytes[0] & 0xFF));
+                detailed_info_string.append("\n\nBalance: $").append(balance_string);
+
+                balance.setText("$" + balance_string);
+                detailed_info.setText(detailed_info_string);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                mifareClassic.close();
+            } catch (IOException ignored) {}
+        }
     }
     @Override
     protected void onResume() {
@@ -141,13 +199,25 @@ public class EasyCardRead extends AppCompatActivity {
     }
 
     // Convert hex string to byte array
-    private static byte[] hexStringToByteArray(String hexString) {
-        String[] hexArray = hexString.split(" ");
-        byte[] byteArray = new byte[hexArray.length];
-        for (int i = 0; i < hexArray.length; i++) {
-            byteArray[i] = (byte) Integer.parseInt(hexArray[i], 16);
+    public static byte[] hexStringToByteArray(String s) {
+        if (s == null) throw new IllegalArgumentException("Hex string is null");
+        int len = s.length();
+        if (len % 2 != 0) {
+            throw new IllegalArgumentException("Hex string must have even length");
         }
-        return byteArray;
+
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            int high = Character.digit(s.charAt(i), 16);
+            int low = Character.digit(s.charAt(i + 1), 16);
+
+            if (high == -1 || low == -1) {
+                throw new IllegalArgumentException("Invalid hex character in: " + s);
+            }
+
+            data[i / 2] = (byte) ((high << 4) + low);
+        }
+        return data;
     }
 
     private static String bytesToHex(byte[] bytes) {

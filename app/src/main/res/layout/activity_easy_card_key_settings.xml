@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:fitsSystemWindows="true"
+    tools:context=".EasyCardKeySettings">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/white_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <View
+        android:id="@+id/blank"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/white_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="useless bar"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/blank"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/line" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font"
+        android:text="Key Settings"
+        android:textColor="@color/fg_color"
+        android:textSize="50dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/white_bar"
+        app:layout_constraintStart_toStartOf="@id/white_bar" />
+
+    <TextView
+        android:id="@+id/HelpText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font"
+        android:text="Please tap card first."
+        android:textAlignment="center"
+        android:textColor="@color/fg_color"
+        android:textSize="20dp"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/white_bar"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/TagId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font"
+        android:text=""
+        android:textColor="@color/fg_color"
+        android:textSize="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@id/white_bar"
+        app:layout_constraintTop_toBottomOf="@id/white_bar"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/Sector2KeyInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font"
+        android:hint="Sector 2 Key A"
+        android:textColor="@color/on_fg_color"
+        android:textColorHint="@color/on_fg_color"
+        android:textSize="20dp"
+        android:background="@drawable/background"
+        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@id/white_bar"
+        app:layout_constraintEnd_toEndOf="@id/white_bar"
+        app:layout_constraintTop_toBottomOf="@id/TagId"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/SaveKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font"
+        android:text="Save Key"
+        android:textColor="@color/on_fg_color"
+        android:background="@drawable/background"
+        android:padding="16dp"
+        android:textSize="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@id/white_bar"
+        app:layout_constraintEnd_toEndOf="@id/white_bar"
+        app:layout_constraintTop_toBottomOf="@id/Sector2KeyInput"
+        android:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
