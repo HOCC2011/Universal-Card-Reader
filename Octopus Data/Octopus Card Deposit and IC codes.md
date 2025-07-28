@@ -45,7 +45,7 @@ T-union (Dual Purse)
 | ShenZhenTong (T-union) |  |
 | :---- | :---- |
 | Card no. | 15020XXXX(X) |
-| Deposit | Unknown |
+| Deposit | $-35.0 |
 | IC name | Unknown |
 | IC code | 0x0224 |
 | Rom type | 0x02 |
@@ -54,7 +54,7 @@ T-union (Dual Purse)
 | Lingnan Pass (T-union) |  |
 | :---- | :---- |
 | Card no. | 15003XXXX(X) |
-| Deposit | Unknown |
+| Deposit | $-35.0 |
 | IC name | Unknown |
 | IC code | 0x0224 |
 | Rom type | 0x02 |
