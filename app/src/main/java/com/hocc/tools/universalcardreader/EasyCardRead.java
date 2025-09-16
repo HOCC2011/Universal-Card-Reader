@@ -122,6 +122,7 @@ public class EasyCardRead extends AppCompatActivity {
         if (mifareClassic == null) {
             detailed_info_string.append("\n\nThis card is not an EasyCard");
             detailed_info.setText(detailed_info_string);
+            return;
         }
 
         try {
@@ -159,12 +160,10 @@ public class EasyCardRead extends AppCompatActivity {
                 balance.setText("$" + balance_string);
                 detailed_info.setText(detailed_info_string);
             }
+
+            mifareClassic.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                mifareClassic.close();
-            } catch (IOException ignored) {}
         }
     }
     @Override
