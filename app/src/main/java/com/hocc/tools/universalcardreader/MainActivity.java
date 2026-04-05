@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, EasyCardRead.class);
             startActivity(intent);
         });
-        if (prefs.getBoolean("EasyCard", false) == true) {
+        if (prefs.getBoolean("EasyCard", true) == true) {
             EasyCard.setVisibility(View.VISIBLE);
         } else {
             EasyCard.setVisibility(View.GONE);
