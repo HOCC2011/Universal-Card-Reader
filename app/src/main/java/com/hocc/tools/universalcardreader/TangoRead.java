@@ -159,7 +159,7 @@ public class TangoRead extends AppCompatActivity {
     }
     private void HCECardReadApplication1WithoutFetching (byte[] responseApplication1) {
         String balanceStringFromCard = bytesToHex(Arrays.copyOfRange(responseApplication1, 1, 4)).replace(" ", "");
-        DetailedInfoString.append("\n\nCard No.: " + bytesToHex(Arrays.copyOfRange(responseApplication1, 4, responseApplication1.length - 1)).replace(" ", ""));
+        DetailedInfoString.append("\n\nCard No.: " + bytesToHex(Arrays.copyOfRange(responseApplication1, 4, 10)).replace(" ", ""));
         DetailedInfo.setText(DetailedInfoString.toString());
         if (balanceStringFromCard.equals("86A000")) {
             Log.d("Account type: ", "Online (Tango Account)");
